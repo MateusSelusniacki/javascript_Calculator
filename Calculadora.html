@@ -1,0 +1,180 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="StyleSheet.css">
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div id = "Calculator">
+        <div id = "screen">
+            <label id = "output"></label>
+        </div>
+
+        <div id = "keyboard">
+            <div id = "first-line-numbers" class = "LineOfNumber">
+                <button type = "submit" name = "1" onclick = "Num('1')" class = "addInNum">1</button>
+                <button type = "submit" name = "2" onclick = "Num('2')" class = "addInNum">2</button>
+                <button type = "submit" name = "3" onclick = "Num('3')" class = "addInNum">3</button>
+                <button type = "submit" name = "percent" onclick = "instaOperator('%')" class = "operationButton">%</button>
+                <button type = "submit" name = "square" onclick = "instaOperator('square')" class = "operationButton">&radic;</button>
+            </div>
+
+            <div id = "second-line-numbers" class = "LineOfNumber">
+                <button type = "submit" name = "4" onclick = "Num('4')" class = "addInNum">4</button>
+                <button type = "submit" name = "5" onclick = "Num('5')" class = "addInNum">5</button>
+                <button type = "submit" name = "6" onclick = "Num('6')" class = "addInNum">6</button>
+                <button type = "submit" name = "times" onclick = "Operator('*')" class = "operationButton">*</button>
+                <button type = "submit" name = "division" onclick = "Operator('/')" class = "operationButton">/</button>
+            </div>
+
+            <div id = "third-line-numbers" class = "LineOfNumber">
+                <button type = "submit" name = "7" onclick = "Num('7')" class = "addInNum">7</button>
+                <button type = "submit" name = "8" onclick = "Num('8')" class = "addInNum">8</button>
+                <button type = "submit" name = "9" onclick = "Num('9')" class = "addInNum">9</button>
+                <button type = "submit" name = "sum" onclick = "Operator('+')" class = "operationButton">+</button>
+                <button type = "submit" name = "subtract" onclick = "Operator('-')" class = "operationButton">-</button>
+
+            </div>
+
+            <div id = "fourth-line-numbers" class = "LineOfNumber">
+                <button type = "submit" name = "0" onclick = "Num('0')" class = "addInNum">0</button>
+                <button type = "submit" name = "00" onclick = "Num('00')" class = "addInNum">00</button>
+                <button type = "submit" name = "dot" onclick = "Num('.')" class = "addInNum">.</button>
+                <button type = "submit" name = "equals" onclick = "Equals()" class = "operationButton">=</button>
+                <button type = "submit" name = "clean" onclick = "Clear()" class = "buttonClear">&#8592;</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const operator = "+" || "-" || "*" || "/";
+
+        class Calculator{
+            constructor(operation){
+                this.operation = operation;
+            }
+
+            get getOperation(){
+                return this.operation;
+            }
+
+            set setOperation($in){
+                this.operation += $in;
+            }
+
+            getLastNum(){
+                let newOperation = "";
+                let lastNum = "";
+                for(var i = this.operation.length - 1;i >= 0 && (!isNaN(this.operation[i]) || this.operation[i] == '.');i--)
+                    lastNum = this.operation[i] + lastNum;
+                
+                newOperation = this.operation.substring(0,i+1);
+                Clear();
+                this.operation = newOperation;
+                return lastNum;
+            }
+
+            Clear(){
+                this.operation = "";
+            }
+        }
+
+        let calc = new Calculator("");
+
+        function setScreenValue(){
+            document.getElementById("output").innerHTML = calc.getOperation;
+        }
+
+        function Num($in){
+            calc.setOperation = $in;
+            setScreenValue();    
+        }
+
+        function Clear(){
+            calc.Clear();
+            setScreenValue();
+        }
+
+        function Operator($op){
+            calc.setOperation = $op;
+            setScreenValue();
+        }
+
+        function instaOperator($op){
+            lastNum = calc.getLastNum();
+
+            switch ($op){
+                case '%':
+                    result = (parseFloat(lastNum,10))/100;
+                    break;
+                case 'square':
+                    result = Math.sqrt((parseFloat(lastNum,10)));
+                    break;
+            }
+            
+
+            calc.setOperation = String(result);
+            setScreenValue();
+        }
+
+        function parseOperation($in){
+            numOfKeys = 0;
+            parsedOperation = [[""]];
+            for (var i = 0; i < $in.length; i++) {
+                ithCaracter = $in.charAt(i);
+
+                if(!isNaN(ithCaracter) || ithCaracter == '.'){
+                    parsedOperation[numOfKeys] = parsedOperation[numOfKeys] + ithCaracter;
+                } else {
+                    numOfKeys++;
+                    parsedOperation[numOfKeys++] = ithCaracter;
+                    parsedOperation[numOfKeys] = "";
+                }
+            }
+            console.log(parsedOperation);
+            return parsedOperation;
+        }
+
+        function ProcessInput($in){
+            return parseOperation($in);
+        }
+
+        function ComputeResult($in){
+            result = parseFloat($in[0],10);
+            
+            for (var i = 1; i < $in.length; i = i + 2) {
+                let op = $in[i];
+                switch (op){
+                    case '+':
+                        result += parseInt($in[i + 1],10);
+                        break;
+                    case '*':
+                        result *= parseInt($in[i + 1],10);
+                        break;
+                    case '-':
+                        result -= parseInt($in[i + 1],10);
+                        break;
+                    case '/':
+                        result /= parseInt($in[i + 1],10);
+                        break;
+                }
+            }
+            return result;
+        }
+
+        function Equals(){
+            output = ProcessInput(calc.getOperation);
+            console.log(ComputeResult(output));
+            result = ComputeResult(output);
+            calc.Clear();
+            calc.setOperation = result;
+            setScreenValue();
+        }
+
+    </script>
+
+</body>
+</html>

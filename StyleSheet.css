@@ -1,0 +1,40 @@
+#Calculator{
+    width: 143px;
+    height: 180px;
+    background-color: #5D0000;
+    padding-top: 2px;
+    padding-left: 2px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+#screen{
+    width: 96%;
+    height: 50px;
+    text-align: right;
+    border: 2px solid black;
+    margin-bottom: 2px;
+    background-color: #CBFF9A;
+}
+
+.LineOfNumber{
+    margin-bottom: 7px;
+}
+
+.addInNum{
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    background-color: 3B;
+}
+
+.operationButton{
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+.buttonClear{
+    width: 25px;
+    height: 25px;
+}
